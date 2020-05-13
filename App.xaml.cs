@@ -2,16 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using NLog;
 using NLog.Extensions.Logging;
 using Microsoft.Extensions.Logging;
+using ImageFiltersWPF.ViewModels.Services;
+using Microsoft.Extensions.Hosting;
+using ImageFiltersWPF.ViewModels;
 
 namespace ImageFiltersWPF
 {
@@ -20,34 +17,57 @@ namespace ImageFiltersWPF
     /// </summary>
     public partial class App : Application
     {
+        private readonly IHost host;
         public IServiceProvider ServiceProvider { get; private set; }
 
         public IConfiguration Configuration { get; private set; }
 
+        public App()
+        {
+            host = Host.CreateDefaultBuilder()
+                    .ConfigureAppConfiguration((context, builder) =>
+                    {
+                        builder.AddJsonFile("appsettings.json", optional: true);
+                    })
+                    .ConfigureServices((context, services) =>
+                    {
+                        ConfigureServices(context.Configuration, services);
+                    })
+                    .ConfigureLogging(logging =>
+                    {
+                        logging.ClearProviders();
+                        logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Error);
+                        logging.AddNLog();
+                    })
+                    .Build();
+
+            ServiceProvider = host.Services;
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
-            var builder = new ConfigurationBuilder()
-             .SetBasePath(Directory.GetCurrentDirectory())
-             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-            Configuration = builder.Build();
-
-            ServiceProvider = ConfigureServices(new ServiceCollection());
-
-            var mainWindow = ServiceProvider.GetRequiredService<Shell>();
+            var mainWindow = ServiceProvider.GetRequiredService<ShellView>();
             mainWindow.Show();
         }
 
-        private IServiceProvider ConfigureServices(IServiceCollection services)
+        private void ConfigureServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddTransient(typeof(Shell));
-            services.AddLogging(logging =>
+            services.AddTransient(typeof(ShellView));
+            services.AddTransient(typeof(GalleryPageView));
+            services.AddTransient(typeof(EditorPageView));
+
+            services.AddSingleton(typeof(ShellViewModel));
+            services.AddSingleton(typeof(GalleryPageViewModel));
+            services.AddSingleton(typeof(EditorPageViewModel));
+            services.AddSingleton(typeof(EditorPageViewModel));
+            services.AddScoped<INavigationService>(serviceProvider =>
             {
-                logging.ClearProviders();
-                logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Error);
-                logging.AddNLog();
+                var navigationService = new NavigationService(serviceProvider);
+                navigationService.Configure(PageEnum.galleryPage, typeof(GalleryPageView));
+                navigationService.Configure(PageEnum.editorPage, typeof(EditorPageView));
+                navigationService.MoveToPage(PageEnum.galleryPage);
+
+                return navigationService;
             });
-            return services.BuildServiceProvider();
         }
     }
 }

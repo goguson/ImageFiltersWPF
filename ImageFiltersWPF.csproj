@@ -33,6 +33,7 @@
     <PackageReference Include="MaterialDesignThemes" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.4" />
@@ -43,10 +44,6 @@
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="copy /Y &quot;$(ProjectDir)NLog.$(ConfigurationName).config&quot; &quot;$(TargetDir)NLog.config&quot;" />
-  </Target>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y &quot;$(SolutionDir)Redist\*.*&quot; &quot;$(TargetDir)&quot;&#xD;&#xA;if $(PlatformName)==x64 (&#xD;&#xA;echo x64&#xD;&#xA;xcopy /Y &quot;$(SolutionDir)Redist\x64\*.*&quot; &quot;$(TargetDir)&quot;&#xD;&#xA;) ELSE (&#xD;&#xA;echo x86/AnyCPU&#xD;&#xA;xcopy /Y &quot;$(SolutionDir)Redist\x86\*.*&quot; &quot;$(TargetDir)&quot;&#xD;&#xA;)&#xD;&#xA;" />
   </Target>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ImageFiltersWPF.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,8 +20,9 @@ namespace ImageFiltersWPF.Views
     /// </summary>
     public partial class EditorPageView : Page
     {
-        public EditorPageView()
+        public EditorPageView(IServiceProvider serviceProvider)
         {
+            DataContext = serviceProvider.GetRequiredService<EditorPageViewModel>();
             InitializeComponent();
         }
     }

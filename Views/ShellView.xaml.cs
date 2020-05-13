@@ -1,4 +1,5 @@
 ﻿using ImageFiltersWPF.ViewModels;
+using ImageFiltersWPF.ViewModels.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;

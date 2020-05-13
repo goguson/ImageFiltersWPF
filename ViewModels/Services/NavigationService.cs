@@ -8,9 +8,7 @@ namespace ImageFiltersWPF.ViewModels.Services
 {
     public class NavigationService : INavigationService, INotifyPropertyChanged
     {
-
         private readonly IServiceProvider serviceProvider;
-
         public event PropertyChangedEventHandler PropertyChanged;
         private Page currentPage;
 
