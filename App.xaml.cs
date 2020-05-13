@@ -29,9 +29,9 @@ namespace ImageFiltersWPF
                     {
                         builder.AddJsonFile("appsettings.json", optional: true);
                     })
-                    .ConfigureServices((context, services) =>
+                    .ConfigureServices((services) =>
                     {
-                        ConfigureServices(context.Configuration, services);
+                        ConfigureServices(services);
                     })
                     .ConfigureLogging(logging =>
                     {
@@ -47,9 +47,10 @@ namespace ImageFiltersWPF
         {
             var mainWindow = ServiceProvider.GetRequiredService<ShellView>();
             mainWindow.Show();
+            base.OnStartup(e);
         }
 
-        private void ConfigureServices(IConfiguration configuration, IServiceCollection services)
+        private void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient(typeof(ShellView));
             services.AddTransient(typeof(GalleryPageView));
@@ -59,6 +60,7 @@ namespace ImageFiltersWPF
             services.AddSingleton(typeof(GalleryPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
+
             services.AddScoped<INavigationService>(serviceProvider =>
             {
                 var navigationService = new NavigationService(serviceProvider);
