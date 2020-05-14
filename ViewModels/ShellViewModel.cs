@@ -15,7 +15,6 @@ namespace ImageFiltersWPF.ViewModels
         public ShellViewModel(ILogger<ShellViewModel> logger, INavigationService navigationService)
         {
             this.logger = logger;
-            logger.LogError("Dziala");
             NavigationService = navigationService;
             InitializeCommands();
         }

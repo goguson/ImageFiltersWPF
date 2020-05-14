@@ -49,6 +49,10 @@ namespace ImageFiltersWPF
             mainWindow.Show();
             base.OnStartup(e);
         }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+        }
 
         private void ConfigureServices(IServiceCollection services)
         {
