@@ -22,21 +22,23 @@ namespace ImageFiltersWPF.ViewModels.Services
             private set
             {
                 currentPage = value;
+                logger.LogInformation($"CurrentPage() - {nameof(CurrentPage)}");
                 OnPropertyChanged(nameof(CurrentPage));
             }
         }
 
         private Dictionary<PageEnum, Type> Pages { get; } = new Dictionary<PageEnum, Type>();
 
-        public NavigationService(IServiceProvider serviceProvider, ILogger logger)
+        public NavigationService(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
-            this.logger = logger;
+            logger = serviceProvider.GetRequiredService<ILogger<NavigationService>>();
         }
-        public void Configure(PageEnum key, Type pageType) => Pages.Add(key, pageType);
+        public void AddPage(PageEnum key, Type pageType) => Pages.Add(key, pageType);
         public void MoveToPage(PageEnum pageKey, object parameter = null) => CurrentPage = GetPage(pageKey, parameter);
         private Page GetPage(PageEnum pageKey, object parameter = null)
         {
+            logger.LogInformation("GetPage()");
             var page = serviceProvider.GetRequiredService(Pages[pageKey]) as Page;
 
             if (page.DataContext is IParameters parameters)

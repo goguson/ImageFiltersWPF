@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using ImageFiltersWPF.ViewModels.Services;
 using Microsoft.Extensions.Hosting;
 using ImageFiltersWPF.ViewModels;
+using ImageFiltersWPF.ViewModels.Interfaces;
+using ImageFiltersWPF.ViewModels.Enums;
 
 namespace ImageFiltersWPF
 {
@@ -46,6 +48,9 @@ namespace ImageFiltersWPF
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainWindow = ServiceProvider.GetRequiredService<ShellView>();
+            var navigatioNService = ServiceProvider.GetRequiredService<NavigationService>();
+            ConfigurateNavigationService(navigatioNService);
+            navigatioNService.MoveToPage(PageEnum.galleryPage);
             mainWindow.Show();
             base.OnStartup(e);
         }
@@ -64,16 +69,16 @@ namespace ImageFiltersWPF
             services.AddSingleton(typeof(GalleryPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
-
-            services.AddScoped<INavigationService>(serviceProvider =>
-            {
-                var navigationService = new NavigationService(serviceProvider);
-                navigationService.Configure(PageEnum.galleryPage, typeof(GalleryPageView));
-                navigationService.Configure(PageEnum.editorPage, typeof(EditorPageView));
-                navigationService.MoveToPage(PageEnum.galleryPage);
-
-                return navigationService;
-            });
+            services.AddSingleton<I_InOutService, InOutService>();
+            services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
+            services.AddSingleton<IMessageBoxService, MessageBoxService>();
+            services.AddSingleton(typeof(NavigationService));
+            services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
+        }
+        private void ConfigurateNavigationService(NavigationService navigationService)
+        {
+            navigationService.AddPage(PageEnum.galleryPage, typeof(GalleryPageView));
+            navigationService.AddPage(PageEnum.editorPage, typeof(EditorPageView));
         }
     }
 }
