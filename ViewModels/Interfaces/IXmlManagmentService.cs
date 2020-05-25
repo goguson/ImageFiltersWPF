@@ -2,8 +2,8 @@
 {
     public interface IXmlManagmentService
     {
-        bool XmlSerialize<T>(T model, string destinationPath);
-        bool XmlDeserialize<T>(T model, string sourcePath);
+        bool XmlSerialize<T>(T objectToSerialize, string destinationPath);
+        bool XmlDeserialize<T>(string sourcePath, out T deserializedObject);
 
     }
 }
