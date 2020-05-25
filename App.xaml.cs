@@ -38,7 +38,7 @@ namespace ImageFiltersWPF
                     .ConfigureLogging(logging =>
                     {
                         logging.ClearProviders();
-                        logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Error);
+                        logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                         logging.AddNLog();
                     })
                     .Build();
