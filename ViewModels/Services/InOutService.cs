@@ -11,15 +11,14 @@ namespace ImageFiltersWPF.ViewModels.Services
     public class InOutService : I_InOutService
     {
         ILogger logger;
-        private readonly IXmlManagmentService xmlManager;
-
+        private const string editedPhotoPrefix = "Edited_";
+        private const string dataXmlPrefix = "Data_";
         public string BasePath { get; set; }
         public string PhotosPath { get; set; }
 
         public InOutService(ILogger<InOutService> logger)
         {
             this.logger = logger;
-            this.xmlManager = xmlManager;
             BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "ImageFiltersWPF");
             PhotosPath = Path.Combine(BasePath, "Photos");
         }
@@ -54,8 +53,9 @@ namespace ImageFiltersWPF.ViewModels.Services
             var destinationPath = Path.Combine(PhotosPath, Path.GetFileNameWithoutExtension(sourcePath));
             var fileName = Path.GetFileName(sourcePath);
             var originalfileNameWithPath = Path.Combine(destinationPath, fileName);
-            var editedFileNameWithPath = Path.Combine(destinationPath, "edited_" + fileName);
-            var imageXmlDataPath = Path.Combine(destinationPath, "data_" + fileName);
+            var editedFileNameWithPath = Path.Combine(destinationPath, editedPhotoPrefix + fileName);
+            var imageXmlDataPath = Path.Combine(destinationPath, dataXmlPrefix + fileName);
+
             logger.LogInformation($"ImportPhoto() originalfileNameWithPath: {originalfileNameWithPath}");
             logger.LogInformation($"ImportPhoto() editedFileNameWithPath: {editedFileNameWithPath}");
 

@@ -48,9 +48,9 @@ namespace ImageFiltersWPF
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainWindow = ServiceProvider.GetRequiredService<ShellView>();
-            var navigatioNService = ServiceProvider.GetRequiredService<NavigationService>();
-            ConfigurateNavigationService(navigatioNService);
-            navigatioNService.MoveToPage(PageEnum.galleryPage);
+            var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
+            ConfigurateNavigationService(navigationService, ServiceProvider);
+            navigationService.MoveToPage(PageEnum.galleryPage);
             mainWindow.Show();
             base.OnStartup(e);
         }
@@ -75,10 +75,10 @@ namespace ImageFiltersWPF
             services.AddSingleton(typeof(NavigationService));
             services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
         }
-        private void ConfigurateNavigationService(NavigationService navigationService)
+        private void ConfigurateNavigationService(NavigationService navigationService, IServiceProvider serviceProvider)
         {
-            navigationService.AddPage(PageEnum.galleryPage, typeof(GalleryPageView));
-            navigationService.AddPage(PageEnum.editorPage, typeof(EditorPageView));
+            navigationService.AddPage(PageEnum.galleryPage, serviceProvider.GetRequiredService<GalleryPageView>());
+            navigationService.AddPage(PageEnum.editorPage, serviceProvider.GetRequiredService<EditorPageView>());
         }
     }
 }

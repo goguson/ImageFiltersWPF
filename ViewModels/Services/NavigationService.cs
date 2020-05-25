@@ -1,8 +1,6 @@
 ﻿using ImageFiltersWPF.ViewModels.Enums;
 using ImageFiltersWPF.ViewModels.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
@@ -11,9 +9,9 @@ namespace ImageFiltersWPF.ViewModels.Services
 {
     public class NavigationService : INavigationService, INotifyPropertyChanged
     {
-        private ILogger logger;
-        private readonly IServiceProvider serviceProvider;
+        private readonly ILogger<NavigationService> logger;
         public event PropertyChangedEventHandler PropertyChanged;
+
         private Page currentPage;
 
         public Page CurrentPage
@@ -27,25 +25,32 @@ namespace ImageFiltersWPF.ViewModels.Services
             }
         }
 
-        private Dictionary<PageEnum, Type> Pages { get; } = new Dictionary<PageEnum, Type>();
+        private Dictionary<PageEnum, Page> Pages { get; } = new Dictionary<PageEnum, Page>();
 
-        public NavigationService(IServiceProvider serviceProvider)
+        public NavigationService(ILogger<NavigationService> logger)
         {
-            this.serviceProvider = serviceProvider;
-            logger = serviceProvider.GetRequiredService<ILogger<NavigationService>>();
+            this.logger = logger;
         }
-        public void AddPage(PageEnum key, Type pageType) => Pages.Add(key, pageType);
-        public void MoveToPage(PageEnum pageKey, object parameter = null) => CurrentPage = GetPage(pageKey, parameter);
+        public void AddPage(PageEnum key, Page page) => Pages.Add(key, page);
+        public void MoveToPage(PageEnum pageKey, object parameter = null)
+        {
+            logger.LogInformation($"MoveToPage() => {pageKey}");
+            CurrentPage = GetPage(pageKey, parameter);
+        }
         private Page GetPage(PageEnum pageKey, object parameter = null)
         {
-            logger.LogInformation("GetPage()");
-            var page = serviceProvider.GetRequiredService(Pages[pageKey]) as Page;
+            logger.LogInformation($"GetPage() {pageKey}");
+            var page = Pages[pageKey];
 
             if (page.DataContext is IParameters parameters)
                 parameters.Activate(parameter);
 
             return page;
         }
-        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged(string propertyName)
+        {
+            logger.LogInformation($"OnPropertyChanged => {propertyName}");
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
