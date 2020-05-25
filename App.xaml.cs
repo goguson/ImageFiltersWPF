@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
 using System.Windows;
 using NLog.Extensions.Logging;
 using Microsoft.Extensions.Logging;
@@ -50,6 +49,7 @@ namespace ImageFiltersWPF
             var mainWindow = ServiceProvider.GetRequiredService<ShellView>();
             var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
             ConfigurateNavigationService(navigationService, ServiceProvider);
+            ConfigureImageFormatCheckerService(ServiceProvider.GetRequiredService<ImageFormatCheckerService>());
             navigationService.MoveToPage(PageEnum.galleryPage);
             mainWindow.Show();
             base.OnStartup(e);
@@ -65,20 +65,31 @@ namespace ImageFiltersWPF
             services.AddTransient(typeof(GalleryPageView));
             services.AddTransient(typeof(EditorPageView));
 
+            services.AddSingleton<IInOutService, InOutService>();
+            services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
+            services.AddSingleton<IMessageBoxService, MessageBoxService>();
+            services.AddSingleton<IPhotoViewModelFactory, PhotoViewModelFactory>();
+
             services.AddSingleton(typeof(ShellViewModel));
             services.AddSingleton(typeof(GalleryPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
-            services.AddSingleton<I_InOutService, InOutService>();
-            services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
-            services.AddSingleton<IMessageBoxService, MessageBoxService>();
             services.AddSingleton(typeof(NavigationService));
+            services.AddSingleton(typeof(ImageFormatCheckerService));
+
             services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
+            services.AddSingleton<IImageFormatCheckerService>(serviceProvider => serviceProvider.GetRequiredService<ImageFormatCheckerService>());
         }
         private void ConfigurateNavigationService(NavigationService navigationService, IServiceProvider serviceProvider)
         {
             navigationService.AddPage(PageEnum.galleryPage, serviceProvider.GetRequiredService<GalleryPageView>());
             navigationService.AddPage(PageEnum.editorPage, serviceProvider.GetRequiredService<EditorPageView>());
+        }
+        private void ConfigureImageFormatCheckerService(ImageFormatCheckerService imageFormatCheckerService)
+        {
+            imageFormatCheckerService.AddSupportedImageExtensionType(".jpeg", ImageExtensionEnum.JPEG);
+            imageFormatCheckerService.AddSupportedImageExtensionType(".jpg", ImageExtensionEnum.JPG);
+            imageFormatCheckerService.AddSupportedImageExtensionType(".png", ImageExtensionEnum.PNG);
         }
     }
 }

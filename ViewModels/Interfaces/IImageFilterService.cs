@@ -4,8 +4,7 @@ using System.Text;
 
 namespace ImageFiltersWPF.ViewModels.Interfaces
 {
-    public interface IFilterSettings
+    class IImageFilterService
     {
-
     }
 }

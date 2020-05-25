@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageFiltersWPF.Views"
         mc:Ignorable="d"
-        Title="ShellView"
+        Title="Wiktoria Pustelnia | Dominik Gogola | ImageFiltersWPF"
         MinHeight="450" MinWidth="800"
         WindowStyle="ThreeDBorderWindow"
         WindowState="Normal"

@@ -1,6 +1,6 @@
 ﻿namespace ImageFiltersWPF.Models
 {
-    public class FilterParamsBase
+    public abstract class FilterParamsBase
     {
 
     }
