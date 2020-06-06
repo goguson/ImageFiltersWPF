@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ImageFiltersWPF.ViewModels.Enums;
 using System.Windows.Controls;
 
-namespace ImageFiltersWPF.ViewModels.Services
+namespace ImageFiltersWPF.ViewModels.Interfaces
 {
     public interface INavigationService
     {

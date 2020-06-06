@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ImageFiltersWPF.ViewModels.Services
+namespace ImageFiltersWPF.ViewModels.Enums
 {
     public enum PageEnum
     {
