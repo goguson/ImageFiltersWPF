@@ -67,7 +67,6 @@ namespace ImageFiltersWPF
 
             services.AddSingleton<IInOutService, InOutService>();
             services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
-            services.AddSingleton<IMessageBoxService, MessageBoxService>();
             services.AddSingleton<IPhotoViewModelFactory, PhotoViewModelFactory>();
 
             services.AddSingleton(typeof(ShellViewModel));
