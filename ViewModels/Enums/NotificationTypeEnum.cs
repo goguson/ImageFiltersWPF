@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ImageFiltersWPF.ViewModels.Enums
 {
-    public enum MessageBoxEnum
+    public enum NotificationTypeEnum
     {
         Information = 0,
         Error = 2

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using ImageFiltersWPF.ViewModels;
 using ImageFiltersWPF.ViewModels.Interfaces;
 using ImageFiltersWPF.ViewModels.Enums;
+using Enterwell.Clients.Wpf.Notifications;
 
 namespace ImageFiltersWPF
 {
@@ -61,23 +62,28 @@ namespace ImageFiltersWPF
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(ShellView));
-            services.AddTransient(typeof(GalleryPageView));
-            services.AddTransient(typeof(EditorPageView));
+
+
+            services.AddSingleton(typeof(EditorPageViewModel));
+            services.AddSingleton(typeof(NavigationService));
+            services.AddSingleton(typeof(ImageFormatCheckerService));
+            services.AddSingleton(typeof(NotificationMessageManager));
 
             services.AddSingleton<IInOutService, InOutService>();
             services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
             services.AddSingleton<IPhotoViewModelFactory, PhotoViewModelFactory>();
+            services.AddSingleton<INotificationService, NotificationService>();
+
+            services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
+            services.AddSingleton<IImageFormatCheckerService>(serviceProvider => serviceProvider.GetRequiredService<ImageFormatCheckerService>());
+            
+            services.AddTransient(typeof(ShellView));
+            services.AddTransient(typeof(GalleryPageView));
+            services.AddTransient(typeof(EditorPageView));
 
             services.AddSingleton(typeof(ShellViewModel));
             services.AddSingleton(typeof(GalleryPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
-            services.AddSingleton(typeof(EditorPageViewModel));
-            services.AddSingleton(typeof(NavigationService));
-            services.AddSingleton(typeof(ImageFormatCheckerService));
-
-            services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
-            services.AddSingleton<IImageFormatCheckerService>(serviceProvider => serviceProvider.GetRequiredService<ImageFormatCheckerService>());
         }
         private void ConfigurateNavigationService(NavigationService navigationService, IServiceProvider serviceProvider)
         {

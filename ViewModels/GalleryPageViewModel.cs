@@ -1,4 +1,5 @@
-﻿using ImageFiltersWPF.ViewModels.Interfaces;
+﻿using ImageFiltersWPF.ViewModels.Enums;
+using ImageFiltersWPF.ViewModels.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System;
@@ -13,6 +14,7 @@ namespace ImageFiltersWPF.ViewModels
         private readonly INavigationService navigationService;
         private readonly IInOutService inOutService;
         private readonly IPhotoViewModelFactory photoViewModelFactory;
+        private readonly INotificationService notificationService;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,12 +39,13 @@ namespace ImageFiltersWPF.ViewModels
         public RelayCommand AddNewImageCommand { get; set; }
         public RelayCommand OnLoad { get; set; }
 
-        public GalleryPageViewModel(ILogger<GalleryPageViewModel> logger, INavigationService navigationService, IInOutService inOutService, IPhotoViewModelFactory photoViewModelFactory)
+        public GalleryPageViewModel(ILogger<GalleryPageViewModel> logger, INavigationService navigationService, IInOutService inOutService, IPhotoViewModelFactory photoViewModelFactory, INotificationService notificationService)
         {
             this.logger = logger;
             this.navigationService = navigationService;
             this.inOutService = inOutService;
             this.photoViewModelFactory = photoViewModelFactory;
+            this.notificationService = notificationService;
             Photos = new ObservableCollection<PhotoViewModel>();
             InitializeCommands();
         }
@@ -56,7 +59,9 @@ namespace ImageFiltersWPF.ViewModels
                 dialog_window.FilterIndex = 0;
                 dialog_window.DefaultExt = "png";
                 if (dialog_window.ShowDialog() != true)
-                    return; //add msg box about not beign able to select photo
+                {
+                    notificationService.ShowNotification(NotificationTypeEnum.Error, " Could not select photo");
+                }
                 var sourceFilePath = dialog_window.FileName;
                 inOutService.ImportImage(sourceFilePath);
                 LoadImageList();

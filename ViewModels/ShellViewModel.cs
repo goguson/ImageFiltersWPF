@@ -1,4 +1,5 @@
-﻿using ImageFiltersWPF.ViewModels.Interfaces;
+﻿using Enterwell.Clients.Wpf.Notifications;
+using ImageFiltersWPF.ViewModels.Interfaces;
 using ImageFiltersWPF.ViewModels.Services;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,10 +13,12 @@ namespace ImageFiltersWPF.ViewModels
         private readonly ILogger<ShellViewModel> logger;
 
         public INavigationService NavigationService { get; }
-        public ShellViewModel(ILogger<ShellViewModel> logger, INavigationService navigationService)
+        public NotificationMessageManager Manager { get; set; }
+        public ShellViewModel(ILogger<ShellViewModel> logger, INavigationService navigationService, NotificationMessageManager manager)
         {
             this.logger = logger;
             NavigationService = navigationService;
+            Manager = manager;
             InitializeCommands();
         }
 
