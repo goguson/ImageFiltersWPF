@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 
 namespace ImageFiltersWPF.Models
 {
@@ -13,6 +15,8 @@ namespace ImageFiltersWPF.Models
         public string PhotoName { get; set; }
         public string OriginalPhotoPath { get; set; }
         public string CurrentPhotoPath { get; set; }
+        public string ImageDataXmlPath { get; set; }
+        public string DirectoryPath { get; set; }
 
         private List<FilterParamsBase> currentFilters;
 

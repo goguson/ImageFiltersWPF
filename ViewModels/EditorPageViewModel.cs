@@ -40,6 +40,8 @@ namespace ImageFiltersWPF.ViewModels
         }
 
         private GaussFilterParams gaussFilterParams;
+        private readonly IInOutService ioService;
+
         public GaussFilterParams GaussFilterParams
         {
             get { return gaussFilterParams; }
@@ -51,7 +53,9 @@ namespace ImageFiltersWPF.ViewModels
         public RelayCommand SavePhotoCommand { get; set; }
         public RelayCommand CancelPhotoCommand { get; set; }
         public RelayCommand RemoveSelectedFilter { get; set; }
-        public EditorPageViewModel(ILogger<EditorPageViewModel> logger, IImageFilterService imageFilterService)
+        public INavigationService NavigationService { get; }
+
+        public EditorPageViewModel(ILogger<EditorPageViewModel> logger, IImageFilterService imageFilterService, INavigationService navigationService, IInOutService ioService)
         {
             this.logger = logger;
             this.imageFilterService = imageFilterService;
@@ -62,10 +66,12 @@ namespace ImageFiltersWPF.ViewModels
                 LeftMid = 0.2f,
                 RightMid = 0.2f,
                 MidBot = 0.2f
-                
+
             };
             CurrentFilters = new ObservableCollection<FilterParamsBase>();
             InitializeCommands();
+            NavigationService = navigationService;
+            this.ioService = ioService;
         }
 
         private void InitializeCommands()
@@ -84,6 +90,27 @@ namespace ImageFiltersWPF.ViewModels
 
             });
 
+            SavePhotoCommand = new RelayCommand(x =>
+            {
+                ioService.ExportImage(editedImage);
+                NavigationService.MoveToPage(Enums.PageEnum.galleryPage);
+            });
+
+            CancelPhotoCommand = new RelayCommand(x =>
+            {
+                NavigationService.MoveToPage(Enums.PageEnum.galleryPage);
+            });
+            RemoveSelectedFilter = new RelayCommand(x =>
+            {
+                if (SelectedFilter == null)
+                    return;
+                var filterToRemove = SelectedFilter;
+                SelectedFilter = null;
+                CurrentFilters.Remove(filterToRemove);
+                EditedImage.PhotoData.CurrentFilters.Remove(filterToRemove);
+                imageFilterService.ReApplyFilters(editedImage);
+            });
+
         }
 
 
@@ -97,7 +124,7 @@ namespace ImageFiltersWPF.ViewModels
 
         public void Activate(object parameter)
         {
-            if (parameter is PhotoViewModel) 
+            if (parameter is PhotoViewModel)
             {
                 EditedImage = parameter as PhotoViewModel;
                 foreach (var filter in EditedImage.PhotoData.CurrentFilters)

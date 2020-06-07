@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace ImageFiltersWPF.Models
 {
+    [XmlInclude(typeof(GaussFilterParams))]
     public abstract class FilterParamsBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -46,7 +46,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             logger.LogInformation($"XmlSerialize() of type {typeof(T)} || Path: {destinationPath}");
 
             var serializer = new XmlSerializer(typeof(T));
-            var streamWriter = new StreamWriter(destinationPath);
+            var streamWriter = new StreamWriter(destinationPath,true);
 
             try
             {

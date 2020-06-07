@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
@@ -91,12 +92,59 @@ namespace ImageFiltersWPF.ViewModels.Services
                     PhotoName = Path.GetFileNameWithoutExtension(sourcePath),
                     ImageFormat = extension,
                     OriginalPhotoPath = originalfileNameWithPath,
-                    CurrentPhotoPath = editedFileNameWithPath
-                }, imageXmlDataPath); ;
+                    CurrentPhotoPath = editedFileNameWithPath,
+                    ImageDataXmlPath = imageXmlDataPath,
+                    DirectoryPath = destinationPath
+                }, imageXmlDataPath);
                 return true;
             }
             else
                 return false;
+
+        }
+        public bool ExportImage(PhotoViewModel photoToExport)
+        {
+            if (!File.Exists(photoToExport.PhotoData.OriginalPhotoPath))
+            {
+                notificationService.ShowNotification(NotificationTypeEnum.Error, "Cannot save image, data is missing");
+                return false;
+            }
+            if (File.Exists(photoToExport.PhotoData.CurrentPhotoPath))
+                File.Delete(photoToExport.PhotoData.CurrentPhotoPath);
+
+            if (File.Exists(photoToExport.PhotoData.ImageDataXmlPath))
+                File.Delete(photoToExport.PhotoData.ImageDataXmlPath);
+
+            using (var fileStream = new FileStream(photoToExport.PhotoData.CurrentPhotoPath, FileMode.Create))
+            {
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(photoToExport.CurrentImage));
+                encoder.Save(fileStream);
+            }
+            xmlManager.XmlSerialize(photoToExport.PhotoData, photoToExport.PhotoData.ImageDataXmlPath);
+            notificationService.ShowNotification(NotificationTypeEnum.Information, "Saved photo!");
+            return true;
+        }
+        public bool DeleteImage(PhotoData imageData)
+        {
+            if (File.Exists(imageData.OriginalPhotoPath))
+            {
+                Directory.Delete(imageData.DirectoryPath, true);
+                return true;
+            }
+            return false;
+        }
+        public BitmapImage LoadImage(string sourcePath)
+        {
+            var uriSource = new Uri(sourcePath);
+            var imgTemp = new BitmapImage();
+            imgTemp.BeginInit();
+            imgTemp.CacheOption = BitmapCacheOption.OnLoad;
+            imgTemp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+            imgTemp.UriSource = uriSource;
+            imgTemp.EndInit();
+
+            return imgTemp;
 
         }
     }

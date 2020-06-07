@@ -71,12 +71,22 @@ namespace ImageFiltersWPF.ViewModels
 
             EditImageCommand = new RelayCommand((o) =>
             {
-                navigationService.MoveToPage(PageEnum.editorPage, selectedPhoto);
+                navigationService.MoveToPage(PageEnum.editorPage, selectedPhoto.Clone() as PhotoViewModel);
             });
 
             OnLoad = new RelayCommand((o) =>
             {
                 LoadImageList();
+            });
+            DeleteImageCommand = new RelayCommand((o) =>
+            {
+                if (inOutService.DeleteImage(SelectedPhoto.PhotoData))
+                {
+                    SelectedPhoto = null;
+                    RefreshImageList();
+                    notificationService.ShowNotification(NotificationTypeEnum.Information, "Deleted photo!");
+                }
+                notificationService.ShowNotification(NotificationTypeEnum.Error, "Error while deleting photo!");
             });
         }
         private void LoadImageList()
