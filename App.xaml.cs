@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using ImageFiltersWPF.ViewModels;
 using ImageFiltersWPF.ViewModels.Interfaces;
 using ImageFiltersWPF.ViewModels.Enums;
+using Enterwell.Clients.Wpf.Notifications;
 
 namespace ImageFiltersWPF
 {
@@ -50,6 +51,7 @@ namespace ImageFiltersWPF
             var navigationService = ServiceProvider.GetRequiredService<NavigationService>();
             ConfigurateNavigationService(navigationService, ServiceProvider);
             ConfigureImageFormatCheckerService(ServiceProvider.GetRequiredService<ImageFormatCheckerService>());
+            ConfigurateImageFilterService(ServiceProvider.GetRequiredService<ImageFilterService>(), ServiceProvider);
             navigationService.MoveToPage(PageEnum.galleryPage);
             mainWindow.Show();
             base.OnStartup(e);
@@ -61,24 +63,35 @@ namespace ImageFiltersWPF
 
         private void ConfigureServices(IServiceCollection services)
         {
+
+
+            services.AddSingleton(typeof(EditorPageViewModel));
+            services.AddSingleton(typeof(NavigationService));
+            services.AddSingleton(typeof(ImageFormatCheckerService));
+            services.AddSingleton(typeof(NotificationMessageManager));
+            services.AddSingleton(typeof(ImageFilterService));
+            services.AddSingleton(typeof(GaussFilterConsumer));
+
+            services.AddSingleton<IInOutService, InOutService>();
+            services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
+            services.AddSingleton<IPhotoViewModelFactory, PhotoViewModelFactory>();
+            services.AddSingleton<INotificationService, NotificationService>();
+
+            services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
+            services.AddSingleton<IImageFormatCheckerService>(serviceProvider => serviceProvider.GetRequiredService<ImageFormatCheckerService>());
+            services.AddSingleton<IImageFilterService>(serviceProvider => serviceProvider.GetRequiredService<ImageFilterService>());
+
             services.AddTransient(typeof(ShellView));
             services.AddTransient(typeof(GalleryPageView));
             services.AddTransient(typeof(EditorPageView));
 
-            services.AddSingleton<IInOutService, InOutService>();
-            services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
-            services.AddSingleton<IMessageBoxService, MessageBoxService>();
-            services.AddSingleton<IPhotoViewModelFactory, PhotoViewModelFactory>();
-
             services.AddSingleton(typeof(ShellViewModel));
             services.AddSingleton(typeof(GalleryPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
-            services.AddSingleton(typeof(EditorPageViewModel));
-            services.AddSingleton(typeof(NavigationService));
-            services.AddSingleton(typeof(ImageFormatCheckerService));
-
-            services.AddSingleton<INavigationService>(serviceProvider => serviceProvider.GetRequiredService<NavigationService>());
-            services.AddSingleton<IImageFormatCheckerService>(serviceProvider => serviceProvider.GetRequiredService<ImageFormatCheckerService>());
+        }
+        private void ConfigurateImageFilterService(ImageFilterService imageFilterService, IServiceProvider serviceProvider)
+        {
+            imageFilterService.AddFilter(FilterEnum.Gauss, serviceProvider.GetRequiredService<GaussFilterConsumer>());
         }
         private void ConfigurateNavigationService(NavigationService navigationService, IServiceProvider serviceProvider)
         {

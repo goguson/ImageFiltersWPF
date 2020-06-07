@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ImageFiltersWPF.ViewModels.Interfaces
 {
-    public interface IMessageBoxService
+    public interface INotificationService
     {
-        void ShowMessage(MessageBoxEnum messageType, string message);
+        public void ShowNotification(NotificationTypeEnum notificationType, string message);
     }
 }

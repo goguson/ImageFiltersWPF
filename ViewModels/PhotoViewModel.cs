@@ -1,12 +1,21 @@
 ﻿using ImageFiltersWPF.Models;
+using System;
 using System.ComponentModel;
 using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels
 {
-    public class PhotoViewModel : INotifyPropertyChanged
+    public class PhotoViewModel : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private PhotoData photoData;
+
+        public PhotoData PhotoData
+        {
+            get { return photoData; }
+            set { photoData = value; OnPropertyChanged(nameof(PhotoData)); }
+        }
+
 
         private string imageName;
 
@@ -31,9 +40,13 @@ namespace ImageFiltersWPF.ViewModels
             set { currentImage = value; OnPropertyChanged(nameof(CurrentImage)); }
         }
 
-        public PhotoData PhotoData { get; set; }
 
 
         public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
     }
 }
