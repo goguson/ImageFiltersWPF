@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ImageFiltersWPF.ViewModels
 {
@@ -105,10 +106,10 @@ namespace ImageFiltersWPF.ViewModels
                 if (SelectedFilter == null)
                     return;
                 var filterToRemove = SelectedFilter;
-                SelectedFilter = null;
                 CurrentFilters.Remove(filterToRemove);
                 EditedImage.PhotoData.CurrentFilters.Remove(filterToRemove);
                 imageFilterService.ReApplyFilters(editedImage);
+                SelectedFilter = CurrentFilters.FirstOrDefault();
             });
 
         }
