@@ -6,9 +6,8 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Interfaces
 {
-    public interface IImageFilterService
+    public interface IFilterParamsConsumer
     {
-        public PhotoViewModel ReApplyFilters(PhotoViewModel photo);
-        public BitmapSource ApplyFilter(BitmapSource photo, FilterParamsBase filter);
+        public BitmapSource Consume(BitmapSource image, FilterParamsBase parameters);
     }
 }

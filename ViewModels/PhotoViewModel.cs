@@ -7,6 +7,14 @@ namespace ImageFiltersWPF.ViewModels
     public class PhotoViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private PhotoData photoData;
+
+        public PhotoData PhotoData
+        {
+            get { return photoData; }
+            set { photoData = value; OnPropertyChanged(nameof(PhotoData)); }
+        }
+
 
         private string imageName;
 
@@ -31,7 +39,6 @@ namespace ImageFiltersWPF.ViewModels
             set { currentImage = value; OnPropertyChanged(nameof(CurrentImage)); }
         }
 
-        public PhotoData PhotoData { get; set; }
 
 
         public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

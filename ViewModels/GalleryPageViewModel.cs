@@ -37,6 +37,8 @@ namespace ImageFiltersWPF.ViewModels
 
 
         public RelayCommand AddNewImageCommand { get; set; }
+        public RelayCommand EditImageCommand { get; set; }
+        public RelayCommand DeleteImageCommand { get; set; }
         public RelayCommand OnLoad { get; set; }
 
         public GalleryPageViewModel(ILogger<GalleryPageViewModel> logger, INavigationService navigationService, IInOutService inOutService, IPhotoViewModelFactory photoViewModelFactory, INotificationService notificationService)
@@ -55,7 +57,7 @@ namespace ImageFiltersWPF.ViewModels
             AddNewImageCommand = new RelayCommand((o) =>
             {
                 OpenFileDialog dialog_window = new OpenFileDialog();
-                dialog_window.Filter = "PNG Image (.png)|*.png";
+                dialog_window.Filter = "Image files|*.bmp;*.jpg;*.png;| PNG files|*.png|JPEG files|*.jpg";
                 dialog_window.FilterIndex = 0;
                 dialog_window.DefaultExt = "png";
                 if (dialog_window.ShowDialog() != true)
@@ -64,7 +66,12 @@ namespace ImageFiltersWPF.ViewModels
                 }
                 var sourceFilePath = dialog_window.FileName;
                 inOutService.ImportImage(sourceFilePath);
-                LoadImageList();
+                RefreshImageList();
+            });
+
+            EditImageCommand = new RelayCommand((o) =>
+            {
+                navigationService.MoveToPage(PageEnum.editorPage, selectedPhoto);
             });
 
             OnLoad = new RelayCommand((o) =>
@@ -81,7 +88,7 @@ namespace ImageFiltersWPF.ViewModels
         }
         private void RefreshImageList()
         {
-            throw new NotImplementedException();
+            LoadImageList();
         }
         private void OnPropertyChanged(string propertyName)
         {

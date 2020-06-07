@@ -1,4 +1,5 @@
 ﻿using ImageFiltersWPF.Models;
+using ImageFiltersWPF.ViewModels.Enums;
 using ImageFiltersWPF.ViewModels.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,16 +14,18 @@ namespace ImageFiltersWPF.ViewModels.Services
         ILogger logger;
         private readonly IXmlManagmentService xmlManager;
         private readonly IImageFormatCheckerService imageFormarChecker;
+        private readonly INotificationService notificationService;
         private const string editedPhotoPrefix = "Edited_";
         private const string dataXmlPrefix = "Data_";
         public string BasePath { get; set; }
         public string PhotosPath { get; set; }
 
-        public InOutService(ILogger<InOutService> logger, IXmlManagmentService xmlManager, IImageFormatCheckerService imageFormarChecker)
+        public InOutService(ILogger<InOutService> logger, IXmlManagmentService xmlManager, IImageFormatCheckerService imageFormarChecker, INotificationService notificationService)
         {
             this.logger = logger;
             this.xmlManager = xmlManager;
             this.imageFormarChecker = imageFormarChecker;
+            this.notificationService = notificationService;
             BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "ImageFiltersWPF");
             PhotosPath = Path.Combine(BasePath, "Photos");
         }
@@ -71,7 +74,10 @@ namespace ImageFiltersWPF.ViewModels.Services
             var imageXmlDataPath = Path.Combine(destinationPath, dataXmlPrefix + Path.GetFileNameWithoutExtension(sourcePath) + ".xml");
 
             if (File.Exists(originalfileNameWithPath))
-                return false; // msgb image already added
+            {
+                notificationService.ShowNotification(NotificationTypeEnum.Information, "Photo already added");
+                return false;
+            }
 
             logger.LogInformation($"ImportPhoto() originalfileNameWithPath: {originalfileNameWithPath}");
             logger.LogInformation($"ImportPhoto() editedFileNameWithPath: {editedFileNameWithPath}");
