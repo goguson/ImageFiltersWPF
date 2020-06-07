@@ -5,14 +5,13 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
     public class InOutService : IInOutService
     {
-        ILogger logger;
+        private ILogger logger;
         private readonly IXmlManagmentService xmlManager;
         private readonly IImageFormatCheckerService imageFormarChecker;
         private readonly INotificationService notificationService;
@@ -30,6 +29,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "ImageFiltersWPF");
             PhotosPath = Path.Combine(BasePath, "Photos");
         }
+
         public bool CopyFile(string sourcepath, string destinationPath)
         {
             logger.LogInformation($"CopyFile() | sourcePath: {sourcepath} | destinationPath: {destinationPath}");
@@ -50,6 +50,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             logger.LogInformation($"CreateDirectory() path: {path}");
             Directory.CreateDirectory(path);
         }
+
         public IEnumerable<PhotoData> LoadPhotoData()
         {
             var folders = Directory.GetFileSystemEntries(PhotosPath);
@@ -61,6 +62,7 @@ namespace ImageFiltersWPF.ViewModels.Services
                     yield return photoData;
             }
         }
+
         public bool ImportImage(string sourcePath)
         {
             logger.LogInformation($"ImportPhoto()sourcePath: {sourcePath}");
@@ -100,8 +102,8 @@ namespace ImageFiltersWPF.ViewModels.Services
             }
             else
                 return false;
-
         }
+
         public bool ExportImage(PhotoViewModel photoToExport)
         {
             if (!File.Exists(photoToExport.PhotoData.OriginalPhotoPath))
@@ -125,6 +127,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             notificationService.ShowNotification(NotificationTypeEnum.Information, "Saved photo!");
             return true;
         }
+
         public bool DeleteImage(PhotoData imageData)
         {
             if (File.Exists(imageData.OriginalPhotoPath))
@@ -134,6 +137,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             }
             return false;
         }
+
         public BitmapImage LoadImage(string sourcePath)
         {
             var uriSource = new Uri(sourcePath);
@@ -145,7 +149,6 @@ namespace ImageFiltersWPF.ViewModels.Services
             imgTemp.EndInit();
 
             return imgTemp;
-
         }
     }
 }

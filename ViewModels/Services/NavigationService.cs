@@ -10,6 +10,7 @@ namespace ImageFiltersWPF.ViewModels.Services
     public class NavigationService : INavigationService, INotifyPropertyChanged
     {
         private readonly ILogger<NavigationService> logger;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private Page currentPage;
@@ -31,12 +32,15 @@ namespace ImageFiltersWPF.ViewModels.Services
         {
             this.logger = logger;
         }
+
         public void AddPage(PageEnum key, Page page) => Pages.Add(key, page);
+
         public void MoveToPage(PageEnum pageKey, object parameter = null)
         {
             logger.LogInformation($"MoveToPage() => {pageKey}");
             CurrentPage = GetPage(pageKey, parameter);
         }
+
         private Page GetPage(PageEnum pageKey, object parameter = null)
         {
             logger.LogInformation($"GetPage() {pageKey}");
@@ -47,6 +51,7 @@ namespace ImageFiltersWPF.ViewModels.Services
 
             return page;
         }
+
         private void OnPropertyChanged(string propertyName)
         {
             logger.LogInformation($"OnPropertyChanged => {propertyName}");

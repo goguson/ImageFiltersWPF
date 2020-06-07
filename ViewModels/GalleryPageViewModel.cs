@@ -2,7 +2,6 @@
 using ImageFiltersWPF.ViewModels.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -28,13 +27,11 @@ namespace ImageFiltersWPF.ViewModels
 
         private ObservableCollection<PhotoViewModel> photos;
 
-
         public ObservableCollection<PhotoViewModel> Photos
         {
             get { return photos; }
             set { photos = value; }
         }
-
 
         public RelayCommand AddNewImageCommand { get; set; }
         public RelayCommand EditImageCommand { get; set; }
@@ -89,6 +86,7 @@ namespace ImageFiltersWPF.ViewModels
                 notificationService.ShowNotification(NotificationTypeEnum.Error, "Error while deleting photo!");
             });
         }
+
         private void LoadImageList()
         {
             Photos.Clear();
@@ -96,10 +94,12 @@ namespace ImageFiltersWPF.ViewModels
             foreach (var photoData in data)
                 Photos.Add(photoViewModelFactory.CreatePhotoViewModel(photoData));
         }
+
         private void RefreshImageList()
         {
             LoadImageList();
         }
+
         private void OnPropertyChanged(string propertyName)
         {
             logger.LogInformation($"OnPropertyChanged({propertyName})");

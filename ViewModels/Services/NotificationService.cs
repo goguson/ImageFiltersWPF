@@ -23,9 +23,11 @@ namespace ImageFiltersWPF.ViewModels.Services
                 case NotificationTypeEnum.Information:
                     ShowInformationNotification(message);
                     break;
+
                 case NotificationTypeEnum.Error:
                     ShowErrorNotification(message);
                     break;
+
                 default:
                     Logger.LogError($"ShowNotification() type: {notificationType} | message: {message}");
                     ShowInformationNotification("Notification service error");
@@ -47,6 +49,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             .Dismiss().WithButton("Ok", button => { })
             .Queue();
         }
+
         private void ShowInformationNotification(string message)
         {
             Logger.LogInformation("ShowInformationNotification()");

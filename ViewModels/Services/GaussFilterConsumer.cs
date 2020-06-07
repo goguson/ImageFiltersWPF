@@ -1,9 +1,5 @@
 ﻿using ImageFiltersWPF.Models;
 using ImageFiltersWPF.ViewModels.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
@@ -12,13 +8,10 @@ namespace ImageFiltersWPF.ViewModels.Services
     {
         public BitmapSource Consume(BitmapSource image, FilterParamsBase parameters)
         {
-
             var kernel = parameters as GaussFilterParams;
 
             int height = image.PixelHeight,
                 width = image.PixelWidth;
-
-
 
             int stride = image.PixelWidth * 4;
             int size = image.PixelHeight * stride;
@@ -27,12 +20,10 @@ namespace ImageFiltersWPF.ViewModels.Services
             image.CopyPixels(outputImagePixels, stride, 0);
             image.CopyPixels(inputImagePixels, stride, 0);
 
-
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
                 {
-
                     float leftTop, midTop, rightTop, leftMid, mid, rightMid, leftBot, midBot, rightBot;
 
                     for (int rgbParam = 0; rgbParam < 3; rgbParam++)
@@ -47,7 +38,7 @@ namespace ImageFiltersWPF.ViewModels.Services
                             midTop = inputImagePixels[(i * stride + 4 * j) + rgbParam] * kernel.MidTop;
                         else
                             midTop = inputImagePixels[((i - 1) * stride + 4 * j) + rgbParam] * kernel.MidTop;
-                        //Right Top 
+                        //Right Top
                         if (i - 1 < 0 || j >= width - 1)
                             rightTop = inputImagePixels[(i * stride + 4 * j) + rgbParam] * kernel.RightTop;
                         else

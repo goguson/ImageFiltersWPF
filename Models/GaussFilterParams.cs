@@ -19,9 +19,9 @@ namespace ImageFiltersWPF.Models
                 else
                     leftTop = 0;
                 OnPropertyChanged(nameof(LeftTop));
-
             }
         }
+
         public GaussFilterParams()
         {
             FilterName = "Gauss filter";
@@ -134,8 +134,6 @@ namespace ImageFiltersWPF.Models
 
         private float rightBot;
 
-
-
         public float RightBot
         {
             get { return rightBot; }
@@ -152,7 +150,6 @@ namespace ImageFiltersWPF.Models
         public float KernelSum
         {
             get { return LeftTop + LeftMid + LeftBot + RightTop + RightMid + RightBot + MidTop + Mid + MidBot; }
-
         }
 
         private void OnPropertyChanged(string propName)
@@ -166,4 +163,3 @@ namespace ImageFiltersWPF.Models
         }
     }
 }
-

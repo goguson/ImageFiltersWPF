@@ -12,9 +12,8 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
     <Grid>
-        <controls:NotificationMessageContainer VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ZIndex="1" Manager="{Binding Manager}"/>
-            
+        <controls:NotificationMessageContainer VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ZIndex="1" Manager="{Binding Manager}" />
 
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Content="{Binding NavigationService.CurrentPage}"/>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Content="{Binding NavigationService.CurrentPage}" />
     </Grid>
 </Window>

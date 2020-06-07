@@ -2,6 +2,5 @@
 {
     public class BinarizationFilterParams : FilterParamsBase
     {
-
     }
 }

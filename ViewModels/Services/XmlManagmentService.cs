@@ -1,9 +1,7 @@
 ﻿using ImageFiltersWPF.ViewModels.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace ImageFiltersWPF.ViewModels.Services
@@ -16,6 +14,7 @@ namespace ImageFiltersWPF.ViewModels.Services
         {
             this.logger = logger;
         }
+
         public bool XmlDeserialize<T>(string sourcePath, out T deserializedObject)
         {
             logger.LogInformation($"XmlDeserialize() of type {typeof(T)} || Path: {sourcePath}");
@@ -40,13 +39,12 @@ namespace ImageFiltersWPF.ViewModels.Services
             }
         }
 
-
         public bool XmlSerialize<T>(T objectToSerialize, string destinationPath)
         {
             logger.LogInformation($"XmlSerialize() of type {typeof(T)} || Path: {destinationPath}");
 
             var serializer = new XmlSerializer(typeof(T));
-            var streamWriter = new StreamWriter(destinationPath,true);
+            var streamWriter = new StreamWriter(destinationPath, true);
 
             try
             {

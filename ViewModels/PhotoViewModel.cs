@@ -8,6 +8,7 @@ namespace ImageFiltersWPF.ViewModels
     public class PhotoViewModel : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private PhotoData photoData;
 
         public PhotoData PhotoData
@@ -15,7 +16,6 @@ namespace ImageFiltersWPF.ViewModels
             get { return photoData; }
             set { photoData = value; OnPropertyChanged(nameof(PhotoData)); }
         }
-
 
         private string imageName;
 
@@ -32,6 +32,7 @@ namespace ImageFiltersWPF.ViewModels
             get { return originalImage; }
             set { originalImage = value; OnPropertyChanged(nameof(OriginalImage)); }
         }
+
         private BitmapSource currentImage;
 
         public BitmapSource CurrentImage
@@ -39,8 +40,6 @@ namespace ImageFiltersWPF.ViewModels
             get { return currentImage; }
             set { currentImage = value; OnPropertyChanged(nameof(CurrentImage)); }
         }
-
-
 
         public void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

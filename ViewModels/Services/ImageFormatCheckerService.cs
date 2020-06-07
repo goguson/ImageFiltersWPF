@@ -1,9 +1,7 @@
 ﻿using ImageFiltersWPF.ViewModels.Enums;
 using ImageFiltersWPF.ViewModels.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
@@ -18,7 +16,8 @@ namespace ImageFiltersWPF.ViewModels.Services
         /// </summary>
         /// <param name="logger"></param>
 
-        Dictionary<string, ImageExtensionEnum> ImageExtensions = new Dictionary<string, ImageExtensionEnum>();
+        private Dictionary<string, ImageExtensionEnum> ImageExtensions = new Dictionary<string, ImageExtensionEnum>();
+
         public ImageFormatCheckerService(ILogger<ImageFormatCheckerService> logger)
         {
             this.logger = logger;

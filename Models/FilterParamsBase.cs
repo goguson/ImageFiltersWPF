@@ -7,6 +7,7 @@ namespace ImageFiltersWPF.Models
     public abstract class FilterParamsBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private string filterName;
 
         public string FilterName

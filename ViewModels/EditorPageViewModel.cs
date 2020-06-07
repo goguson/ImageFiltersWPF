@@ -1,7 +1,6 @@
 ﻿using ImageFiltersWPF.Models;
 using ImageFiltersWPF.ViewModels.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -21,6 +20,7 @@ namespace ImageFiltersWPF.ViewModels
             get { return filterParamsBase; }
             set { filterParamsBase = value; OnPropertyChanged(nameof(SelectedFilter)); }
         }
+
         private ObservableCollection<FilterParamsBase> currentFilters;
 
         public ObservableCollection<FilterParamsBase> CurrentFilters
@@ -28,6 +28,7 @@ namespace ImageFiltersWPF.ViewModels
             get { return currentFilters; }
             set { currentFilters = value; OnPropertyChanged(nameof(CurrentFilters)); }
         }
+
         private PhotoViewModel editedImage;
 
         public PhotoViewModel EditedImage
@@ -67,7 +68,6 @@ namespace ImageFiltersWPF.ViewModels
                 LeftMid = 0.2f,
                 RightMid = 0.2f,
                 MidBot = 0.2f
-
             };
             CurrentFilters = new ObservableCollection<FilterParamsBase>();
             InitializeCommands();
@@ -88,7 +88,6 @@ namespace ImageFiltersWPF.ViewModels
 
             AddBinarizationFilterCommand = new RelayCommand(x =>
             {
-
             });
 
             SavePhotoCommand = new RelayCommand(x =>
@@ -111,11 +110,7 @@ namespace ImageFiltersWPF.ViewModels
                 imageFilterService.ReApplyFilters(editedImage);
                 SelectedFilter = CurrentFilters.FirstOrDefault();
             });
-
         }
-
-
-
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -133,7 +128,6 @@ namespace ImageFiltersWPF.ViewModels
                     CurrentFilters.Add(filter);
                 }
             }
-
         }
     }
 }

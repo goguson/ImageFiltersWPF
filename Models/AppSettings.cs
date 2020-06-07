@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ImageFiltersWPF.Models
+﻿namespace ImageFiltersWPF.Models
 {
     public class AppSettings
     {

@@ -1,16 +1,16 @@
-﻿using ImageFiltersWPF.Views;
+﻿using Enterwell.Clients.Wpf.Notifications;
+using ImageFiltersWPF.ViewModels;
+using ImageFiltersWPF.ViewModels.Enums;
+using ImageFiltersWPF.ViewModels.Interfaces;
+using ImageFiltersWPF.ViewModels.Services;
+using ImageFiltersWPF.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using System;
 using System.Windows;
-using NLog.Extensions.Logging;
-using Microsoft.Extensions.Logging;
-using ImageFiltersWPF.ViewModels.Services;
-using Microsoft.Extensions.Hosting;
-using ImageFiltersWPF.ViewModels;
-using ImageFiltersWPF.ViewModels.Interfaces;
-using ImageFiltersWPF.ViewModels.Enums;
-using Enterwell.Clients.Wpf.Notifications;
 
 namespace ImageFiltersWPF
 {
@@ -45,6 +45,7 @@ namespace ImageFiltersWPF
 
             ServiceProvider = host.Services;
         }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainWindow = ServiceProvider.GetRequiredService<ShellView>();
@@ -56,6 +57,7 @@ namespace ImageFiltersWPF
             mainWindow.Show();
             base.OnStartup(e);
         }
+
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
@@ -63,8 +65,6 @@ namespace ImageFiltersWPF
 
         private void ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddSingleton(typeof(EditorPageViewModel));
             services.AddSingleton(typeof(NavigationService));
             services.AddSingleton(typeof(ImageFormatCheckerService));
@@ -89,15 +89,18 @@ namespace ImageFiltersWPF
             services.AddSingleton(typeof(GalleryPageViewModel));
             services.AddSingleton(typeof(EditorPageViewModel));
         }
+
         private void ConfigurateImageFilterService(ImageFilterService imageFilterService, IServiceProvider serviceProvider)
         {
             imageFilterService.AddFilter(FilterEnum.Gauss, serviceProvider.GetRequiredService<GaussFilterConsumer>());
         }
+
         private void ConfigurateNavigationService(NavigationService navigationService, IServiceProvider serviceProvider)
         {
             navigationService.AddPage(PageEnum.galleryPage, serviceProvider.GetRequiredService<GalleryPageView>());
             navigationService.AddPage(PageEnum.editorPage, serviceProvider.GetRequiredService<EditorPageView>());
         }
+
         private void ConfigureImageFormatCheckerService(ImageFormatCheckerService imageFormatCheckerService)
         {
             imageFormatCheckerService.AddSupportedImageExtensionType(".jpeg", ImageExtensionEnum.JPEG);
