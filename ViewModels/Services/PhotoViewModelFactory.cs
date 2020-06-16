@@ -25,6 +25,7 @@ namespace ImageFiltersWPF.ViewModels.Services
                 photoViewModel.PhotoData = data;
                 photoViewModel.CurrentImage = inOutService.LoadImage(data.CurrentPhotoPath);
                 photoViewModel.OriginalImage = inOutService.LoadImage(data.OriginalPhotoPath);
+                photoViewModel.ImageName = data.PhotoName;
                 return photoViewModel;
             }
             catch (Exception)

@@ -71,6 +71,7 @@ namespace ImageFiltersWPF
             services.AddSingleton(typeof(NotificationMessageManager));
             services.AddSingleton(typeof(ImageFilterService));
             services.AddSingleton(typeof(GaussFilterConsumer));
+            services.AddSingleton(typeof(BinarizationFilterConsumer));
 
             services.AddSingleton<IInOutService, InOutService>();
             services.AddSingleton<IXmlManagmentService, XmlManagmentService>();
@@ -93,6 +94,7 @@ namespace ImageFiltersWPF
         private void ConfigurateImageFilterService(ImageFilterService imageFilterService, IServiceProvider serviceProvider)
         {
             imageFilterService.AddFilter(FilterEnum.Gauss, serviceProvider.GetRequiredService<GaussFilterConsumer>());
+            imageFilterService.AddFilter(FilterEnum.Binarization, serviceProvider.GetRequiredService<BinarizationFilterConsumer>());
         }
 
         private void ConfigurateNavigationService(NavigationService navigationService, IServiceProvider serviceProvider)

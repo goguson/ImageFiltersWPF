@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 namespace ImageFiltersWPF.Models
 {
     [XmlInclude(typeof(GaussFilterParams))]
+    [XmlInclude(typeof(BinarizationFilterParams))]
     public abstract class FilterParamsBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

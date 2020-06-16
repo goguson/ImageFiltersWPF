@@ -1,14 +1,54 @@
-﻿using ImageFiltersWPF.Models;
-using ImageFiltersWPF.ViewModels.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using ImageFiltersWPF.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace ImageFiltersWPF.ViewModels.Services
+namespace ImageApi.Controllers
 {
-    public class BinarizationFilterConsumer : IFilterParamsConsumer
+    [ApiController]
+    [Route("[controller]")]
+    public class WeatherForecastController : ControllerBase
     {
-        public BitmapSource Consume(BitmapSource image, FilterParamsBase parameters)
+        private static readonly string[] Summaries = new[]
         {
-            var obj = parameters as BinarizationFilterParams;
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        private readonly ILogger<WeatherForecastController> _logger;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        {
+            _logger = logger;
+        }
+
+        [HttpGet]
+        public IEnumerable<WeatherForecast> Get()
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+        [HttpPost("[action]")]
+        public IActionResult GetBinarization([FromBody] BinaryTransferModel data)
+        {
+            var returnObject = data;
+            var image = ByteArrayToBitmapImage(data.ImageByteArray);
+
+            var obj = data.Parameters;
 
             int precision = obj.PrecisionParameter;
             float adjustment = obj.AdjustmentParameter;
@@ -79,9 +119,7 @@ namespace ImageFiltersWPF.ViewModels.Services
                     }
                 }
             }
-
-
-            return BitmapImage.Create(
+            var resultImage = BitmapImage.Create(
                 image.PixelWidth,
                 image.PixelHeight,
                 image.DpiX,
@@ -90,6 +128,11 @@ namespace ImageFiltersWPF.ViewModels.Services
                 image.Palette,
                 pixels,
                 stride);
+
+            returnObject.ImageByteArray = BitmapSourceToByteArray(resultImage);
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StringContent(JsonConvert.SerializeObject(returnObject), Encoding.UTF8, "application/json");
+            return Ok(response);
         }
 
         private static int GetGrayScale(int stride, byte[] pixels, int pixel_height, int pixel_width, float rParam, float gParam, float bParam)
@@ -102,6 +145,34 @@ namespace ImageFiltersWPF.ViewModels.Services
 
             var grayScale = rParam * red + gParam * green + bParam * blue;
             return (int)grayScale;
+        }
+        public byte[] BitmapSourceToByteArray(BitmapSource bitmapImage)
+        {
+            byte[] data;
+            var encoder = new PngBitmapEncoder();
+
+            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                data = ms.ToArray();
+            }
+
+            return data;
+        }
+
+        public BitmapImage ByteArrayToBitmapImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
         }
     }
 }

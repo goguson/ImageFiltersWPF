@@ -41,6 +41,8 @@ namespace ImageFiltersWPF.ViewModels.Services
         {
             if (filterParams is GaussFilterParams)
                 return Filters[FilterEnum.Gauss].Consume(image, filterParams);
+            if (filterParams is BinarizationFilterParams)
+                return Filters[FilterEnum.Binarization].Consume(image, filterParams);
             return null;
         }
     }
