@@ -7,6 +7,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for choosing filter consumer
+    /// </summary>
     public class ImageFilterService : IImageFilterService
     {
         private readonly ILogger<ImageFilterService> logger;
@@ -41,6 +44,8 @@ namespace ImageFiltersWPF.ViewModels.Services
         {
             if (filterParams is GaussFilterParams)
                 return Filters[FilterEnum.Gauss].Consume(image, filterParams);
+            if (filterParams is BinarizationFilterParams)
+                return Filters[FilterEnum.Binarization].Consume(image, filterParams);
             return null;
         }
     }

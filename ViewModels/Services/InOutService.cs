@@ -9,6 +9,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for input adn output operations
+    /// </summary>
     public class InOutService : IInOutService
     {
         private ILogger logger;
@@ -30,6 +33,7 @@ namespace ImageFiltersWPF.ViewModels.Services
             PhotosPath = Path.Combine(BasePath, "Photos");
         }
 
+
         public bool CopyFile(string sourcepath, string destinationPath)
         {
             logger.LogInformation($"CopyFile() | sourcePath: {sourcepath} | destinationPath: {destinationPath}");
@@ -44,7 +48,33 @@ namespace ImageFiltersWPF.ViewModels.Services
                 return false;
             }
         }
+        public byte[] BitmapSourceToByteArray(BitmapSource bitmapImage)
+        {
+            byte[] data;
+            var encoder = new PngBitmapEncoder();
 
+            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                data = ms.ToArray();
+            }
+
+            return data;
+        }
+
+        public BitmapImage ByteArrayToBitmapImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
+        }
         public void CreateDirectory(string path)
         {
             logger.LogInformation($"CreateDirectory() path: {path}");

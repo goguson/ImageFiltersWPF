@@ -24,6 +24,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Api\**" />
+    <Compile Remove="ImageApi\**" />
+    <Compile Remove="WebApplication1\**" />
+    <EmbeddedResource Remove="Api\**" />
+    <EmbeddedResource Remove="ImageApi\**" />
+    <EmbeddedResource Remove="WebApplication1\**" />
+    <None Remove="Api\**" />
+    <None Remove="ImageApi\**" />
+    <None Remove="WebApplication1\**" />
+    <Page Remove="Api\**" />
+    <Page Remove="ImageApi\**" />
+    <Page Remove="WebApplication1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".dockerignore" />
     <None Remove="appsettings.json" />
     <None Remove="NLog.config" />
   </ItemGroup>

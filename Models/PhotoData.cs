@@ -4,6 +4,9 @@ using System.ComponentModel;
 
 namespace ImageFiltersWPF.Models
 {
+    /// <summary>
+    /// Class is a model for image info
+    /// </summary>
     public class PhotoData : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

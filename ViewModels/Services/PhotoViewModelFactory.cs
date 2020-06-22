@@ -5,6 +5,9 @@ using System;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for creating photo view models
+    /// </summary>
     public class PhotoViewModelFactory : IPhotoViewModelFactory
     {
         private readonly ILogger<PhotoViewModelFactory> logger;
@@ -25,6 +28,7 @@ namespace ImageFiltersWPF.ViewModels.Services
                 photoViewModel.PhotoData = data;
                 photoViewModel.CurrentImage = inOutService.LoadImage(data.CurrentPhotoPath);
                 photoViewModel.OriginalImage = inOutService.LoadImage(data.OriginalPhotoPath);
+                photoViewModel.ImageName = data.PhotoName;
                 return photoViewModel;
             }
             catch (Exception)

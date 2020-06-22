@@ -1,12 +1,19 @@
 ﻿using ImageFiltersWPF.Models;
 using ImageFiltersWPF.ViewModels.Interfaces;
+using ImageFiltersWPF.ViewModels.Services;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 
 namespace ImageFiltersWPF.ViewModels
 {
+    /// <summary>
+    /// Class resposinble for editor page logic
+    /// </summary>
     public class EditorPageViewModel : INotifyPropertyChanged, IParameters
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -47,7 +54,21 @@ namespace ImageFiltersWPF.ViewModels
         public GaussFilterParams GaussFilterParams
         {
             get { return gaussFilterParams; }
-            set { gaussFilterParams = value; }
+            set { gaussFilterParams = value; OnPropertyChanged(nameof(GaussFilterParams)); }
+        }
+        private BinarizationFilterParams binarizationFilterParams;
+
+        public BinarizationFilterParams BinarizationFilterParams
+        {
+            get { return binarizationFilterParams; }
+            set { binarizationFilterParams = value; OnPropertyChanged(nameof(BinarizationFilterParams)); }
+        }
+        private bool serverModeEnabled;
+
+        public bool ServerModeEnabled
+        {
+            get { return serverModeEnabled; }
+            set { serverModeEnabled = value; OnPropertyChanged(nameof(ServerModeEnabled)); }
         }
 
         public RelayCommand AddGaussFilterCommand { get; set; }
@@ -69,6 +90,14 @@ namespace ImageFiltersWPF.ViewModels
                 RightMid = 0.2f,
                 MidBot = 0.2f
             };
+            BinarizationFilterParams = new BinarizationFilterParams()
+            {
+                RedParameter = 0.3f,
+                GreenParameter = 0.6f,
+                BlueParameter = 0.11f,
+                PrecisionParameter = 6,
+                AdjustmentParameter = 0.15f
+            };
             CurrentFilters = new ObservableCollection<FilterParamsBase>();
             InitializeCommands();
             NavigationService = navigationService;
@@ -77,17 +106,68 @@ namespace ImageFiltersWPF.ViewModels
 
         private void InitializeCommands()
         {
-            AddGaussFilterCommand = new RelayCommand(x =>
+            AddGaussFilterCommand = new RelayCommand(async x =>
             {
                 var filter = GaussFilterParams.Clone() as GaussFilterParams;
                 CurrentFilters.Add(filter);
                 EditedImage.PhotoData.CurrentFilters.Add(filter);
+                if (ServerModeEnabled)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Add("Accept", "application/json");
+                        var transferObject = new GaussTransferModel()
+                        {
+                            ImageByteArray = ioService.BitmapSourceToByteArray(EditedImage.CurrentImage),
+                            Parameters = filter
+                        };
+                        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44337/weatherforecast/GetGauss");
+                        request.Content = new StringContent(JsonConvert.SerializeObject(transferObject), Encoding.UTF8, "application/json");
+                        var response = await client.SendAsync(request);
 
-                EditedImage.CurrentImage = imageFilterService.ApplyFilter(EditedImage.CurrentImage, filter);
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            var jsonString = await response.Content.ReadAsStringAsync();
+                            var resultImg = JsonConvert.DeserializeObject<GaussTransferModel>(jsonString);
+                            EditedImage.CurrentImage = ioService.ByteArrayToBitmapImage(resultImg.ImageByteArray);
+                        }
+                    }
+                }
+                else
+
+                    EditedImage.CurrentImage = imageFilterService.ApplyFilter(EditedImage.CurrentImage, filter);
             });
 
-            AddBinarizationFilterCommand = new RelayCommand(x =>
+            AddBinarizationFilterCommand = new RelayCommand(async x =>
             {
+                var filter = BinarizationFilterParams.Clone() as BinarizationFilterParams;
+                CurrentFilters.Add(filter);
+                EditedImage.PhotoData.CurrentFilters.Add(filter);
+
+                if (ServerModeEnabled)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Add("Accept", "application/json");
+                        var transferObject = new BinaryTransferModel()
+                        {
+                            ImageByteArray = ioService.BitmapSourceToByteArray(EditedImage.CurrentImage),
+                            Parameters = filter
+                        };
+                        var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44337/weatherforecast/GetBinarization");
+                        request.Content = new StringContent(JsonConvert.SerializeObject(transferObject), Encoding.UTF8, "application/json");
+                        var response = await client.SendAsync(request);
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            var jsonString = await response.Content.ReadAsStringAsync();
+                            var resultImg = JsonConvert.DeserializeObject<BinaryTransferModel>(jsonString);
+                            EditedImage.CurrentImage = ioService.ByteArrayToBitmapImage(resultImg.ImageByteArray);
+                        }
+                    }
+                }
+                else
+                    EditedImage.CurrentImage = imageFilterService.ApplyFilter(EditedImage.CurrentImage, filter);
             });
 
             SavePhotoCommand = new RelayCommand(x =>

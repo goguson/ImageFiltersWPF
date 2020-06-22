@@ -11,10 +11,6 @@ namespace ImageFiltersWPF.ViewModels.Services
     public class ImageFormatCheckerService : IImageFormatCheckerService
     {
         private readonly ILogger<ImageFormatCheckerService> logger;
-        /// <summary>
-        /// Constructor of ImageFormatCheckerService
-        /// </summary>
-        /// <param name="logger"></param>
 
         private Dictionary<string, ImageExtensionEnum> ImageExtensions = new Dictionary<string, ImageExtensionEnum>();
 

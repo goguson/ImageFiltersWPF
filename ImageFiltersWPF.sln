@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageFiltersWPF", "ImageFiltersWPF.csproj", "{01952009-AA9C-47EA-A054-120CE9EA08A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageFiltersWPF", "ImageFiltersWPF.csproj", "{01952009-AA9C-47EA-A054-120CE9EA08A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageFiltersWPF.Tests", "..\ImageFiltersWPF.Tests\ImageFiltersWPF.Tests.csproj", "{CA4C51CF-8FC9-4092-AE6E-2392207621BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{9AA72B81-29F8-4BA9-96C2-83F75936FF88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,22 @@ Global
 		{01952009-AA9C-47EA-A054-120CE9EA08A6}.Release|Any CPU.Build.0 = Release|x64
 		{01952009-AA9C-47EA-A054-120CE9EA08A6}.Release|x64.ActiveCfg = Release|x64
 		{01952009-AA9C-47EA-A054-120CE9EA08A6}.Release|x64.Build.0 = Release|x64
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA4C51CF-8FC9-4092-AE6E-2392207621BD}.Release|x64.Build.0 = Release|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Debug|x64.Build.0 = Debug|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Release|x64.ActiveCfg = Release|Any CPU
+		{9AA72B81-29F8-4BA9-96C2-83F75936FF88}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

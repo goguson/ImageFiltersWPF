@@ -5,6 +5,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels
 {
+    /// <summary>
+    /// Class responsible for storing photo data in application
+    /// </summary>
     public class PhotoViewModel : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
