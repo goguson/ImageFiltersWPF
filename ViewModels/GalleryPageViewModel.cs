@@ -7,6 +7,9 @@ using System.ComponentModel;
 
 namespace ImageFiltersWPF.ViewModels
 {
+    /// <summary>
+    /// Class responsible for gallery page logic
+    /// </summary>
     public class GalleryPageViewModel : INotifyPropertyChanged
     {
         private readonly ILogger<GalleryPageViewModel> logger;

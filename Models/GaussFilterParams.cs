@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace ImageFiltersWPF.Models
 {
+    /// <summary>
+    /// Class for keeping gauss filter params
+    /// </summary>
     public class GaussFilterParams : FilterParamsBase, INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;

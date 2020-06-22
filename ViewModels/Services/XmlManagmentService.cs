@@ -6,6 +6,9 @@ using System.Xml.Serialization;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for serializing adn deserializing files
+    /// </summary>
     public class XmlManagmentService : IXmlManagmentService
     {
         private readonly ILogger<XmlManagmentService> logger;

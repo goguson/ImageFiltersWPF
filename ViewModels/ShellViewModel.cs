@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ImageFiltersWPF.ViewModels
 {
+    /// <summary>
+    /// Class responsible for logic behind window frame
+    /// </summary>
     public class ShellViewModel
     {
         private readonly ILogger<ShellViewModel> logger;

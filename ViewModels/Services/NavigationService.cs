@@ -7,6 +7,9 @@ using System.Windows.Controls;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for navigation between pages
+    /// </summary>
     public class NavigationService : INavigationService, INotifyPropertyChanged
     {
         private readonly ILogger<NavigationService> logger;

@@ -7,6 +7,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for choosing filter consumer
+    /// </summary>
     public class ImageFilterService : IImageFilterService
     {
         private readonly ILogger<ImageFilterService> logger;

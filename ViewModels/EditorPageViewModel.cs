@@ -11,6 +11,9 @@ using System.Text;
 
 namespace ImageFiltersWPF.ViewModels
 {
+    /// <summary>
+    /// Class resposinble for editor page logic
+    /// </summary>
     public class EditorPageViewModel : INotifyPropertyChanged, IParameters
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -4,6 +4,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class that consumes gauss filter params
+    /// </summary>
     public class GaussFilterConsumer : IFilterParamsConsumer
     {
         public BitmapSource Consume(BitmapSource image, FilterParamsBase parameters)

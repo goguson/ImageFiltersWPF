@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Ckass responsible for showing notifications
+    /// </summary>
     public class NotificationService : INotificationService
     {
         public ILogger<NotificationService> Logger { get; }

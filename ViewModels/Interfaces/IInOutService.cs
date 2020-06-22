@@ -4,6 +4,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Interfaces
 {
+    /// <summary>
+    /// Interface for inpput and aoutput logic
+    /// </summary>
     public interface IInOutService
     {
         bool ImportImage(string sourcePath);

@@ -4,6 +4,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class that consumes binarization filter params
+    /// </summary>
     public class BinarizationFilterConsumer : IFilterParamsConsumer
     {
         public BitmapSource Consume(BitmapSource image, FilterParamsBase parameters)

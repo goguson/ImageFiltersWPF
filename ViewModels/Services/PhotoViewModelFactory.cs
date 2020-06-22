@@ -5,6 +5,9 @@ using System;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for creating photo view models
+    /// </summary>
     public class PhotoViewModelFactory : IPhotoViewModelFactory
     {
         private readonly ILogger<PhotoViewModelFactory> logger;

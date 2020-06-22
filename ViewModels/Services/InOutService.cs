@@ -9,6 +9,9 @@ using System.Windows.Media.Imaging;
 
 namespace ImageFiltersWPF.ViewModels.Services
 {
+    /// <summary>
+    /// Class responsible for input adn output operations
+    /// </summary>
     public class InOutService : IInOutService
     {
         private ILogger logger;

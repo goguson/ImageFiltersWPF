@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace ImageFiltersWPF.Models
 {
+    /// <summary>
+    /// BinarizationFilterParams is a model class which holds filter data
+    /// </summary>
     public class BinarizationFilterParams : FilterParamsBase, INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;

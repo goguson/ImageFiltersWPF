@@ -1,5 +1,8 @@
 ﻿namespace ImageFiltersWPF.ViewModels.Enums
 {
+    /// <summary>
+    /// Enum for declaring photo format type
+    /// </summary>
     public enum ImageExtensionEnum
     {
         JPG = 0,

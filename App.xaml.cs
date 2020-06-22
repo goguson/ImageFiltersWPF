@@ -15,7 +15,7 @@ using System.Windows;
 namespace ImageFiltersWPF
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Class responsible for building application
     /// </summary>
     public partial class App : Application
     {
